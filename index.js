@@ -1,10 +1,15 @@
 const hardware = require('./hardware');
 const { obj: map } = require('through2-map');
+const interpretSensors = require('./sensors');
+const setMotorSpeeds = require('./motor-command');
+require('./ui-server');
 
-// Give the robot a placeholder brain.
-// Act braindead, ignore sensors, don't move
-const brains = map(sensors => ({
-  wheels: { left: 0, right: 0 }
-}))
+const brains = map(sensors => {
+  return { speed: 0, steering: 0 };
+});
 
-hardware.pipe(brains).pipe(hardware);
+hardware
+  .pipe(interpretSensors)
+  .pipe(brains)
+  .pipe(setMotorSpeeds)
+  .pipe(hardware);

@@ -5,7 +5,7 @@
 
 const { Duplex } = require('stream');
 const hal = require('alphabot-hal')();
-const config = require('./config');
+const { clock } = require('./config');
 
 const hardware = new Duplex({
   readableObjectMode: true,
@@ -37,10 +37,10 @@ setInterval(() => {
   });
 
   ticks.left = ticks.right = 0;
-}, config.clock);
+}, clock);
 
+// Stop motors when exiting
 process.on('exit', () => {
-  // Stop motors when exiting
   hal.wheels.left(0);
   hal.wheels.right(0);
 });
