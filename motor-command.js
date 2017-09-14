@@ -1,5 +1,5 @@
-const { obj: map } = require("through2-map");
-const config = require("./config");
+const { obj: map } = require('through2-map');
+const config = require('./config');
 const { log } = require('./ui-server');
 
 const previous = { left: 0, right: 0 };
