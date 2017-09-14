@@ -1,5 +1,4 @@
 const config = require("../config");
-const { log } = require("../ui-server");
 const { bus, restrictAngle } = require("../utils");
 
 const distanceTurnedByWheel = (wheel, ticks) => {
@@ -26,8 +25,6 @@ module.exports = sensors => {
   previous.y += distanceOfCenter * Math.sin(previous.phi);
   previous.phi += (rightWheelDistance - leftWheelDistance) / config.wheelbase;
   previous.phi = restrictAngle(previous.phi);
-
-  log("odometry", previous);
 
   return previous;
 };
