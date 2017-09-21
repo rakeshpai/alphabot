@@ -1,12 +1,8 @@
 const hardware = require('./hardware');
-const { obj: map } = require('through2-map');
 const interpretSensors = require('./sensors');
+const brains = require('./brains');
 const setMotorSpeeds = require('./motor-command');
-require('./ui-server');
-
-const brains = map(sensors => {
-  return { speed: 0, steering: 0 };
-});
+require('./ui-server'); // Not strictly needed, as it's automatically init'd.
 
 hardware
   .pipe(interpretSensors)

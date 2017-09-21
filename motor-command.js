@@ -1,6 +1,6 @@
 const { obj: map } = require('through2-map');
 const config = require('./config');
-const { log } = require('./ui-server');
+const { notify } = require('./ui-server');
 
 const previous = { left: 0, right: 0 };
 
@@ -23,7 +23,7 @@ module.exports = map(({speed, steering, ts}) => {
   previous.left = Math.round(slewedSpeed(previous.left, leftSpeed));
   previous.right = Math.round(slewedSpeed(previous.right, rightSpeed));
 
-  log('motors', previous);
+  notify('motors', previous);
 
   return { wheels: previous, ts };
 });

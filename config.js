@@ -15,11 +15,11 @@ module.exports = {
   // Getting this right is kinda important, so it's worth fiddling with
   // these values. Parameters are easy to measure using just a ruler.
   // All dimensions in mm.
-  wheelbase: 130,   // distance between the centres of the wheels
+  wheelbase: 140,   // distance between the centres of the wheels
 
   wheels: {
-    left: { diameter: 66 },
-    right: { diameter: 66 },
+    left: { diameter: 67 },
+    right: { diameter: 67 },
   },
 
   // Slew rate is the maximum allowable change in the mtor PWM

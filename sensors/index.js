@@ -1,6 +1,6 @@
 const { obj: map } = require('through2-map');
 const odometry = require('./odometry');
-const { log } = require('../ui-server');
+const { notify } = require('../ui-server');
 
 module.exports = map(sensors => {
   const processed = {
@@ -9,7 +9,7 @@ module.exports = map(sensors => {
     ts: sensors.ts
   };
 
-  log('sensed', processed);
+  notify('sensed', processed);
 
   return processed;
 });
