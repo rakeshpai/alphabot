@@ -28,4 +28,6 @@ module.exports = {
   // graceful. Setting it too low makes the robot sluggish though.
   enableSlew: true,
   slewRate: 10,
+
+  topSpeed: 3000 //3350
 }

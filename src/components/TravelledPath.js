@@ -22,7 +22,6 @@ const styles = {
   num: css({ textAlign: 'right' }),
   svg: css({
     border: '1px solid #666',
-    height: 30,
     width: '100%',
     height: 300
   })
