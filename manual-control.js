@@ -1,5 +1,5 @@
 const { bus } = require('./utils');
-const config = require('./config');
+const { topSpeed } = require('./config');
 const lirc = require('./utils/lirc_receiver');
 
 const remoteKeysToInput = {
@@ -30,10 +30,10 @@ module.exports = sensors => {
 
   if(input) {
     switch(input) {
-      case 'forward': command.speed = config.topSpeed; break;
+      case 'forward': command.speed = topSpeed; break;
       case 'left': command.steering = 15; break;
       case 'right': command.steering = -15; break;
-      case 'reverse': command.speed = -1 * config.topSpeed; break;
+      case 'reverse': command.speed = -1 * topSpeed; break;
     }
   }
 

@@ -1,9 +1,9 @@
-const config = require("../config");
+const { wheels, encoderTicksPerRotation, wheelbase } = require("../config");
 const { bus, restrictAngle } = require("../utils");
 
 const distanceTurnedByWheel = (wheel, ticks) => {
   // D = 2 pi R * delta-ticks / ticks per rotation
-  return Math.PI * config.wheels[wheel].diameter * ticks / config.encoderTicksPerRotation;
+  return Math.PI * wheels[wheel].diameter * ticks / encoderTicksPerRotation;
 };
 
 const previous = {
@@ -23,7 +23,7 @@ module.exports = sensors => {
 
   previous.x += distanceOfCenter * Math.cos(previous.phi);
   previous.y += distanceOfCenter * Math.sin(previous.phi);
-  previous.phi += (rightWheelDistance - leftWheelDistance) / config.wheelbase;
+  previous.phi += (rightWheelDistance - leftWheelDistance) / wheelbase;
   previous.phi = restrictAngle(previous.phi);
 
   return previous;
