@@ -1,6 +1,7 @@
 import React from 'react';
 import Window from './Window';
 import store from '../store';
+import loadConditionally from './loadConditionally';
 import { css } from 'glamor';
 
 const styles = {
@@ -27,16 +28,14 @@ const styles = {
   })
 };
 
-const Odometry = () => (
-  store.sensed ? (
-    <div className={styles.odometry}>
-      <div className={styles.odometryHeading}>Odometry</div>
-      <span>x:</span> <span className={styles.num}>{store.sensed.odometry.x.toFixed(1)}mm</span>
-      <span>y:</span> <span className={styles.num}>{store.sensed.odometry.y.toFixed(1)}mm</span>
-      <span>Φ:</span> <span className={styles.num}>{(store.sensed.odometry.phi * 180 / Math.PI).toFixed(1)}°</span>
-    </div>
-  ) : <div>Loading...</div>
-)
+const Odometry = loadConditionally(() => store.sensed, () => (
+  <div className={styles.odometry}>
+    <div className={styles.odometryHeading}>Odometry</div>
+    <span>x:</span> <span className={styles.num}>{store.sensed.odometry.x.toFixed(1)}mm</span>
+    <span>y:</span> <span className={styles.num}>{store.sensed.odometry.y.toFixed(1)}mm</span>
+    <span>Φ:</span> <span className={styles.num}>{(store.sensed.odometry.phi * 180 / Math.PI).toFixed(1)}°</span>
+  </div>
+));
 
 const displayLength = 300;
 const padding = 10;
@@ -61,31 +60,28 @@ const color = index => `#${
     .repeat(3)
 }`;
 
-export default props => {
-  if(!store.timeSeriesData.odometry) return <div>Loading...</div>;
+export default loadConditionally(() => store.timeSeriesData.odometry, props => (
+  <Window heading='Travelled Path'>
+    <div className={css({position: 'relative'})}>
+      <svg className={styles.svg} viewBox={viewBox()} transform='scale(1, -1)'
+        preserveAspectRatio='xMidYMid meet'>
+        {
+          store.timeSeriesData.odometry
+            .slice(0, displayLength)
+            .map(({ data, ts }, index, odometry) => {
+              if(index === odometry.length - 1) return null;  // last datapoint
 
-  return (
-    <Window heading='Travelled Path'>
-      <div className={css({position: 'relative'})}>
-        <svg className={styles.svg} viewBox={viewBox()} transform='scale(1, -1)'>
-          {
-            store.timeSeriesData.odometry
-              .slice(0, displayLength)
-              .map(({ data, ts }, index, odometry) => {
-                if(index === odometry.length - 1) return null;  // last datapoint
+              const { x: nextX, y: nextY } = odometry[index+1].data;
 
-                const { x: nextX, y: nextY } = odometry[index+1].data;
-
-                return (
-                  <line x1={data.x} y1={data.y} x2={nextX} y2={nextY} strokeWidth='.5%'
-                    key={ts} stroke={color(index)} />
-                )
-              })
-              .reverse()  // Put oldest point first so that it goes behind.
-          }
-        </svg>
-        <Odometry />
-      </div>
-    </Window>
-  )
-};
+              return (
+                <line x1={data.x} y1={data.y} x2={nextX} y2={nextY} strokeWidth='.5%'
+                  key={ts} stroke={color(index)} />
+              )
+            })
+            .reverse()  // Put oldest point first so that it goes behind.
+        }
+      </svg>
+      <Odometry />
+    </div>
+  </Window>
+));

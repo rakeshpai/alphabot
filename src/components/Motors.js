@@ -1,5 +1,6 @@
 import React from 'react';
 import Window from './Window';
+import loadConditionally from './loadConditionally';
 import store from '../store';
 import { css } from 'glamor';
 
@@ -43,32 +44,28 @@ const scale = (value, key) => {
   return coordinate < 0 ? -coordinate : coordinate;
 }
 
-export default props => {
-  if(!store.motors || !store.sensed) return <div>Loading...</div>;
-
-  return (
-    <Window heading='Wheels'>
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}
-        className={css({width: '100%'})} preserveAspectRatio='none'
-        transform='scale(1, -1)'>
-        {traces.map(({ key, color }) => (
-          <polyline stroke={color} strokeWidth='0.5%' fill='none' key={key}
-            points={store.timeSeriesData[key]
-              .slice(0, width)
-              .map(({ data }, index) => `${index},${scale(data, key)}`)
-              .join(' ')
-            } />
-        ))}
-      </svg>
-      <div className={styles.legend}>
-        {traces.map(trace => (
-          <div className={styles.trace} key={trace.key}>
-            <span className={css({background: trace.color})}> </span>
-            <span>{trace.name}</span>
-            <span className={styles.num}>{store.timeSeriesData[trace.key][0].data}</span>
-          </div>
-        ))}
-      </div>
-    </Window>
-  );
-};
+export default loadConditionally(() => store.motors && store.sensed, props => (
+  <Window heading='Wheels'>
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}
+      className={css({width: '100%'})} preserveAspectRatio='none'
+      transform='scale(1, -1)'>
+      {traces.map(({ key, color }) => (
+        <polyline stroke={color} strokeWidth='0.5%' fill='none' key={key}
+          points={store.timeSeriesData[key]
+            .slice(0, width)
+            .map(({ data }, index) => `${index},${scale(data, key)}`)
+            .join(' ')
+          } />
+      ))}
+    </svg>
+    <div className={styles.legend}>
+      {traces.map(trace => (
+        <div className={styles.trace} key={trace.key}>
+          <span className={css({background: trace.color})}> </span>
+          <span>{trace.name}</span>
+          <span className={styles.num}>{store.timeSeriesData[trace.key][0].data}</span>
+        </div>
+      ))}
+    </div>
+  </Window>
+));
