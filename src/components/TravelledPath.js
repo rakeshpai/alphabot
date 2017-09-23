@@ -38,19 +38,38 @@ const Odometry = loadConditionally(() => store.sensed, () => (
 ));
 
 const displayLength = 300;
+const aspectRatio = 13/5; // Chosen by the scientific method of observing screen and checking if it looks pretty
 const padding = 10;
+
+const min = arr => Math.min.apply(null, arr);
+const max = arr => Math.max.apply(null, arr);
 
 const viewBox = () => {
   const sliceOfTimeSeries = store.timeSeriesData.odometry.slice(0, displayLength).map(({ data }) => data);
   const xCoords = sliceOfTimeSeries.map(({ x }) => x);
   const yCoords = sliceOfTimeSeries.map(({ y }) => y);
 
-  const minX = Math.min.apply(null, xCoords);
-  const maxX = Math.max.apply(null, xCoords);
-  const minY = Math.min.apply(null, yCoords);
-  const maxY = Math.max.apply(null, yCoords);
+  const minX = min(xCoords);
+  const maxX = max(xCoords);
+  const minY = min(yCoords);
+  const maxY = max(yCoords);
 
-  return `${minX-padding} ${minY-padding} ${maxX-minX+2*padding} ${maxY-minY+2*padding}`;
+  let xCoord = minX;
+  let yCoord = minY;
+  let width = (maxX - minX);
+  let height = (maxY - minY);
+
+  if(width / height > aspectRatio) {
+    // Too wide. Adjust height.
+    height = width / aspectRatio;
+    yCoord = ((maxY + minY) / 2) - (height / 2);
+  } else if(width / height < aspectRatio) {
+    // Too narrow. Adjust width.
+    width = height * aspectRatio;
+    xCoord = ((maxX + minX) / 2) - (width / 2);
+  }
+
+  return `${xCoord-padding} ${yCoord-padding} ${width+2*padding} ${height+2*padding}`;
 }
 
 const color = index => `#${
