@@ -3,6 +3,7 @@ const { obj: map } = require('through2-map');
 const { notify } = require('../ui-server');
 const powerOff = require('power-off');
 const manualControl = require('./manual-control');
+const behave = require('../behaviours');
 
 let mode = 'manual';
 notify('mode', mode);
@@ -25,5 +26,5 @@ module.exports = map(sensors => {
 
   if(mode === 'manual') return manualControl(sensors);
 
-  return { speed: 0, steering: 0 };
+  return behave(sensors);
 });

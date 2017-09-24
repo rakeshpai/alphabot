@@ -3,6 +3,7 @@ import { css } from 'glamor';
 import store from '../store';
 
 import HeaderInfo from './HeaderInfo';
+import Behaviours from './Behaviours';
 import TravelledPath from './TravelledPath';
 import Motors from './Motors';
 import MasterReset from './MasterReset';
@@ -54,6 +55,7 @@ export default props => {
       <div className={styles.columns}>
         <div className={styles.leftColumn}>
           <TravelledPath />
+          <Behaviours />
         </div>
 
         <div className={styles.rightColumn}>

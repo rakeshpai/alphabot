@@ -29,5 +29,6 @@ module.exports = {
   enableSlew: true,
   slewRate: 10,
 
+  steeringPid: [4.5, 0, 0],
   topSpeed: 3000 //3350
 }
