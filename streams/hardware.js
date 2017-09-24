@@ -5,7 +5,7 @@
 
 const { Duplex } = require('stream');
 const hal = require('alphabot-hal')();
-const { clock } = require('./config');
+const { clock } = require('../config');
 
 const hardware = new Duplex({
   readableObjectMode: true,

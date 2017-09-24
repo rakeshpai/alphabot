@@ -1,6 +1,6 @@
-const { bus } = require('./utils');
+const { bus } = require('../utils');
 const { obj: map } = require('through2-map');
-const { notify } = require('./ui-server');
+const { notify } = require('../ui-server');
 const powerOff = require('power-off');
 const manualControl = require('./manual-control');
 

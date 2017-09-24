@@ -1,6 +1,6 @@
-const { bus } = require('./utils');
-const { topSpeed } = require('./config');
-const lirc = require('./utils/lirc_receiver');
+const { bus } = require('../utils');
+const { topSpeed } = require('../config');
+const lirc = require('../utils/lirc_receiver');
 
 const remoteKeysToInput = {
   'KEY_CHANNEL': 'forward',

@@ -1,7 +1,7 @@
-const hardware = require('./hardware');
+const hardware = require('./streams/hardware');
 const interpretSensors = require('./sensors');
-const brains = require('./brains');
-const setMotorSpeeds = require('./motor-command');
+const brains = require('./streams/brains');
+const setMotorSpeeds = require('./streams/motor-command');
 require('./ui-server'); // Not strictly needed, as it's automatically init'd.
 
 hardware
