@@ -4,41 +4,20 @@ const stop = require('../actions/stop');
 const turn = require('../actions/turn');
 const { notify } = require('../ui-server');
 
-const lirc = require('../utils/lirc_receiver');
-
-lirc.on('keypress', data => console.log(data));
-
 const behaviours = [
   createBehavior({
     name: 'Behavior 1',
     actions: [
-      turn({ by: Math.PI }),
       // driveStraight({distance: 1000}),
+      turn({ by: Math.PI }),
       stop(),
-      //stop()
     ]
   })
 ];
 
-const ballisticBehaviors = [
-  // {
-  //   needsControl: ({virtualBump}) => !!virtualBump,
-  //   behavior: createBehavior({
-  //     name: 'Virtual Bump',
-  //     actions: [
-  //       stop(),
-  //       driveStraight({direction: 'reverse', time: 500}),
-  //       stop(),
-  //       turn({by: -Math.PI/2})
-  //     ]
-  //   })
-  // }
-];
-
-let currentBehavior;
-
 notify('behaviours', behaviours);
 
+let currentBehavior;
 const setBehaviour = behaviour => {
   currentBehavior = behaviour;
   notify('behaviourIndex', behaviour ? behaviours.indexOf(behaviour) : null);
