@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   // Duration between actions in the bot. Sensor polling interval, if you like.
   // Too low (fast), and you don't have enough sensor data to act.
   // Too high (slow), and you react too sluggishly.
@@ -29,6 +29,20 @@ module.exports = {
   enableSlew: true,
   slewRate: 10,
 
-  steeringPid: [4.5, 0, 0],
-  topSpeed: 3000 //3350
+  // This is the PID controller constants for the various steering actions.
+  // You may want to tweak these to suit your bot.
+  // [kp, kd, ki]
+  steeringPid: [10, 0, 0],
+
+  topSpeed: 3350
+};
+
+// The rest of the config is values computed from the above.
+module.exports = {
+  ...config,
+  drivingSpeeds: {
+    fast: config.topSpeed * 0.4,
+    slow: config.topSpeed * 0.1
+  },
+  steeringSpeed: config.topSpeed / 200
 }

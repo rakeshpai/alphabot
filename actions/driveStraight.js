@@ -1,8 +1,7 @@
-const { createAction } = require('../utils');
-const config = require('../config');
+const { createAction } = require('../utils/behaviour-engine');
+const { steeringPid, drivingSpeeds } = require('../config');
+const { distance: euclideanDistance } = require('../utils');
 const PID = require('../utils/pid');
-
-const square = num => Math.pow(num, 2);
 
 module.exports = createAction({
   name: 'Drive straight',
@@ -12,7 +11,7 @@ module.exports = createAction({
     let startTime;
     const startLocation = {};
 
-    const phiDesiredPID = new PID(...config.steeringPid);
+    const phiDesiredPID = new PID(...steeringPid);
     phiDesiredPID.angle = true;
 
     let isGoalSet = false;
@@ -20,25 +19,25 @@ module.exports = createAction({
     const speed = ({ x, y }, done) => {
       if(distance) {
         // console.log('driving with distance');
-        const distanceTravelled = Math.sqrt(square(x - startLocation.x) + square(y - startLocation.y));
+        const distanceTravelled = euclideanDistance({x,y}, startLocation);
         const distanceToGoal = Math.abs(distance - distanceTravelled);
 
-        //console.log(distanceTravelled);
+        console.log(distanceTravelled);
 
-        if(distanceToGoal < 30) { done(); return 0; }
-        else if(distanceToGoal < 400) dir * config.topSpeed * 0.7;
-        return dir * config.topSpeed;
+        if(distanceToGoal < 50) { done(); return 0; }
+        else if(distanceToGoal < 400) dir * drivingSpeeds.slow;
+        return dir * drivingSpeeds.fast;
       } else if(time) {
         const elapsedTime = Date.now() - startTime;
         const timeRemaining = time - elapsedTime;
 
         console.log('time based travel', timeRemaining, elapsedTime, dir);
-        if(timeRemaining < 20) { done(); return 0; }
-        if(timeRemaining > 1000) return dir * config.topSpeed;
-        return dir * config.topSpeed * timeRemaining / 100;
+        if(timeRemaining < 30) { done(); return 0; }
+        if(timeRemaining > 400) return dir * drivingSpeeds.fast;
+        return dir * drivingSpeeds.slow;
       } else {
         console.log('Driving without arguments');
-        return dir * config.topSpeed;
+        return dir * drivingSpeeds.fast;
       }
     }
 
@@ -57,4 +56,4 @@ module.exports = createAction({
       };
     }
   }
-})
+});

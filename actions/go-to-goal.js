@@ -1,15 +1,14 @@
-const { createAction } = require("../utils");
-const { topSpeed, steeringPid } = require("../config");
-const PID = require("../utils/pid");
+const { createAction } = require('../utils/behaviour-engine');
+const { drivingSpeeds, steeringPid } = require('../config');
+const { distance } = require('../utils')
+const PID = require('../utils/pid');
 
-const square = num => Math.pow(num, 2);
-
-const isWithin = (range, a) => b => (square(a.x - b.x) + square(a.y - b.y)) < square(range);
+const isWithin = (range, a) => b => distance(a, b) < range;
 
 module.exports = createAction({
-  name: "Go to goal",
+  name: 'Go to goal',
   action: (goal = ({x:0, y:0}), done) => {
-    const isCloseBy = isWithin(300, goal);
+    const isCloseBy = isWithin(200, goal);
     const hasReached = isWithin(30, goal);
 
     const phiDesiredPID = new PID(...steeringPid);
@@ -29,9 +28,9 @@ module.exports = createAction({
       }
 
       return {
-        speed: isCloseBy(odometry) ? (topSpeed * 0.8) : topSpeed,
+        speed: isCloseBy(odometry) ? drivingSpeeds.slow : drivingSpeeds.fast,
         steering: phiDesiredPID.update(odometry.phi)
       }
-    });
+    };
   }
 });

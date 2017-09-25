@@ -37,6 +37,13 @@ const Odometry = loadConditionally(() => store.sensed, () => (
   </div>
 ));
 
+const Bot = ({ x, y, phi }) => (
+  <polygon
+    fill='#20D'
+    points={`1.4,0 -1,-1 -0.3,0 -1,1`}
+    transform={`translate(${x}, ${y}) rotate(${phi*180/Math.PI}) scale(10)`} />
+)
+
 const displayLength = 300;
 const aspectRatio = 13/5; // Chosen by the scientific method of observing screen and checking if it looks pretty
 const padding = 10;
@@ -79,7 +86,7 @@ const color = index => `#${
     .repeat(3)
 }`;
 
-export default loadConditionally(() => store.timeSeriesData.odometry, props => (
+export default loadConditionally(() => store.timeSeriesData.odometry && store.timeSeriesData.odometry.length > 0, props => (
   <Window heading='Travelled Path'>
     <div className={css({position: 'relative'})}>
       <svg className={styles.svg} viewBox={viewBox()} transform='scale(1, -1)'
@@ -99,6 +106,7 @@ export default loadConditionally(() => store.timeSeriesData.odometry, props => (
             })
             .reverse()  // Put oldest point first so that it goes behind.
         }
+        <Bot {...store.timeSeriesData.odometry[0].data} />
       </svg>
       <Odometry />
     </div>

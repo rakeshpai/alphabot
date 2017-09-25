@@ -14,7 +14,7 @@ const store = {
   motorCommand: command => sendCommand('motorCommand', command),
   resetAll: () => {
     sendCommand('resetAll');
-    store.timeSeriesData.odometry = [];
+    store.timeSeriesData = {};
   },
   setMode: mode => sendCommand('setMode', mode)
 };

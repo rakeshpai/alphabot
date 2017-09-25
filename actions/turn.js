@@ -1,6 +1,6 @@
-const { createAction } = require('../utils');
 const PID = require('../utils/pid');
-const { topSpeed, steeringPid: steeringPidConfig } = require('../config');
+const { createAction } = require('../utils/behaviour-engine');
+const { steeringSpeed, steeringPid } = require('../config');
 
 const turnForTime = (time, direction, done) => {
   const dir = ['right', 'clockwise', -1].some(d => d === direction) ? -1 : 1;
@@ -14,13 +14,13 @@ const turnForTime = (time, direction, done) => {
       return { speed: 0, steering: 0 };
     }
 
-    return { speed: 0, steering: dir * config.topSpeed * 0.1 };
+    return { speed: 0, steering: dir * steeringSpeed };
   }
 }
 
 const turnByAngle = (by, done) => {
-  const steeringPid = new PID(...steeringPidConfig);
-  steeringPid.angle = true;
+  const phiDesiredPID = new PID(...steeringPid);
+  phiDesiredPID.angle = true;
 
   let isGoalSet = false;
   let target;
@@ -28,7 +28,7 @@ const turnByAngle = (by, done) => {
   return sensors => {
     if(!isGoalSet) {
       target = sensors.odometry.phi + by;
-      steeringPid.setTarget(target);
+      phiDesiredPID.setTarget(target);
       isGoalSet = true;
     }
 
@@ -37,7 +37,7 @@ const turnByAngle = (by, done) => {
       && sensors.raw.left === 0 && sensors.raw.right === 0
     ) done();
 
-    return {speed: 0, steering: steeringPid.update(sensors.odometry.phi)};
+    return {speed: 0, steering: phiDesiredPID.update(sensors.odometry.phi)};
   }
 }
 

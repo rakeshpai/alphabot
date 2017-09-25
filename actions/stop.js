@@ -1,4 +1,4 @@
-const { createAction } = require('../utils');
+const { createAction } = require('../utils/behaviour-engine');
 
 module.exports = createAction({
   name: 'Stop',

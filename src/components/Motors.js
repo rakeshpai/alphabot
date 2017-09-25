@@ -44,7 +44,7 @@ const scale = (value, key) => {
   return coordinate < 0 ? -coordinate : coordinate;
 }
 
-export default loadConditionally(() => store.motors && store.sensed, props => (
+export default loadConditionally(() => store.motors && store.sensed && store.timeSeriesData.motorLeft, props => (
   <Window heading='Wheels'>
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}
       className={css({width: '100%'})} preserveAspectRatio='none'
