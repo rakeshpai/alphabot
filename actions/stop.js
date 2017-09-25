@@ -11,7 +11,7 @@ module.exports = createAction({
         && sensors.raw.left === 0 && sensors.raw.right === 0
       ) done();
 
-      return {speed: 0, steering: 0}
+      return { speed: 0, steering: 0 }
     };
   }
 });

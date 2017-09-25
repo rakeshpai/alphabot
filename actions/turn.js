@@ -11,10 +11,10 @@ const turnForTime = (time, direction, done) => {
 
     if(Date.now() - startTime > time) {
       done();
-      return {speed: 0, steering: 0};
+      return { speed: 0, steering: 0 };
     }
 
-    return {speed: 0, steering: dir * config.topSpeed * 0.1};
+    return { speed: 0, steering: dir * config.topSpeed * 0.1 };
   }
 }
 

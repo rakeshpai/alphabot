@@ -43,11 +43,6 @@ module.exports = createAction({
     }
 
     return sensors => {
-      // return {
-      //   speed: config.topSpeed,
-      //   steering: 0
-      // };
-
       if(!isGoalSet) {
         phiDesiredPID.setTarget(sensors.odometry.phi);
         startTime = Date.now();
@@ -56,7 +51,6 @@ module.exports = createAction({
         isGoalSet = true;
       }
 
-      //console.log('Returned speed', speed(sensors.odometry, () => {}))
       return {
         speed: speed(sensors.odometry, done),
         steering: phiDesiredPID.update(sensors.odometry.phi)

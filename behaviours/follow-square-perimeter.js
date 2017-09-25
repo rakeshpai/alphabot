@@ -1,4 +1,4 @@
-const createBehavior = require("./createBehavior");
+const { createBehavior } = require("../utils");
 const driveStraight = require("../actions/driveStraight");
 const stop = require("../actions/stop");
 const turn = require("../actions/turn");

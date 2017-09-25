@@ -1,18 +1,14 @@
-const createBehavior = require("./createBehavior");
+const { createAction } = require("../utils");
 const config = require("../config");
 const PID = require("../utils/pid");
-const curry = require("curry");
 
-const isWithin = curry((range, a, b) => {
-  return ((a.x - b.x) ^ 2) + ((a.y - b.y) ^ 2) < (range ^ 2);
-});
+const isWithin = (range, a) => b => ((a.x - b.x) ^ 2) + ((a.y - b.y) ^ 2) < (range ^ 2);
 
-const halt = {speed: 0, steering: 0};
+const halt = { speed: 0, steering: 0 };
 
-module.exports = createBehavior({
+module.exports = createAction({
   name: "Go to goal",
-  type: "servo",
-  action: (goal = ({x:0, y:0})) => done => {
+  action: (goal = ({x:0, y:0}), done) => {
     const startTime = Date.now();
 
     const isCloseBy = isWithin(300, goal);
@@ -23,7 +19,7 @@ module.exports = createBehavior({
 
     let isGoalSet = false;
 
-    return ({odometry}) => {
+    return ({ odometry }) => {
       if(!isGoalSet) {
         phiDesiredPID.setTarget(Math.atan2(goal.y - odometry.y, goal.x - odometry.x));
         isGoalSet = true;
@@ -38,7 +34,7 @@ module.exports = createBehavior({
       const steering = phiDesiredPID.update(odometry.phi);
 
       if(Date.now() - startTime < 5000) {
-        return {speed, steering};
+        return { speed, steering };
       } else {
         return halt;
       }

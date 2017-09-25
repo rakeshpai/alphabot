@@ -30,24 +30,5 @@ module.exports = {
       currentAction: () => actions[currentActionIndex],
       tick: sensors => tickHandler(sensors)
     };
-
-    // let actionsList, currentAction, tickHandler;
-    //
-    // const executeNextAction = done => {
-    //   if(!actionsList.length) return done();
-    //
-    //   currentAction = actionsList.shift();
-    //   tickHandler = currentAction.execute(() => executeNextAction(done));
-    // }
-    //
-    // return {
-    //   name,
-    //   execute: done => {
-    //     actionsList = [...actions]; // Reset the actionsList
-    //     executeNextAction(done);
-    //   },
-    //   currentAction: () => currentAction,
-    //   tick: sensors => tickHandler(sensors)
-    // };
   }
 };
