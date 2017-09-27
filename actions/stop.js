@@ -6,7 +6,7 @@ module.exports = createAction({
     const startTime = Date.now();
 
     return sensors => {
-      if(emergency == true) {
+      if(emergency) {
         return { speed: 0, steering: 0, { emergency: true } }
       } else if (
         Date.now() - startTime > 500
