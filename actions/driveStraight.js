@@ -22,7 +22,7 @@ module.exports = createAction({
         const distanceTravelled = euclideanDistance({x,y}, startLocation);
         const distanceToGoal = Math.abs(distance - distanceTravelled);
 
-        console.log(distanceTravelled);
+        // console.log(distanceTravelled);
 
         if(distanceToGoal < 50) { done(); return 0; }
         else if(distanceToGoal < 400) dir * drivingSpeeds.slow;

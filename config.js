@@ -32,9 +32,19 @@ const config = {
   // This is the PID controller constants for the various steering actions.
   // You may want to tweak these to suit your bot.
   // [kp, kd, ki]
-  steeringPid: [10, 0, 0],
+  steeringPid: [30, 20, 0],
 
-  topSpeed: 3350
+  // The speed at which the motors are driven at 100% PWM.
+  // Chosen by trial and error.
+  // It's hard to compute this without knowing some hard-to-measure params.
+  // Trial and error on a fully charged battery is good enough.
+  // It's a one-time setting.
+  topSpeed: 3350,
+
+  // If the obstacle sensors encounter a value lower than obstacleThreshold,
+  // it is connsidered to have hit an obstacle.
+  // Chosen by trial and error, based on values reported by the sensor.
+  obstacleThreshold: 33
 };
 
 // The rest of the config is values computed from the above.

@@ -6,6 +6,7 @@ import HeaderInfo from './HeaderInfo';
 import Behaviours from './Behaviours';
 import TravelledPath from './TravelledPath';
 import Motors from './Motors';
+import Sensors from './Sensors';
 import MasterReset from './MasterReset';
 
 css.global('*', { boxSizing: 'border-box', margin: 0, padding: 0 });
@@ -61,6 +62,7 @@ export default props => {
         <div className={styles.rightColumn}>
           <MasterReset />
           <Motors />
+          <Sensors />
         </div>
       </div>
     </div>

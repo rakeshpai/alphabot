@@ -7,40 +7,60 @@ import store from '../store';
 const styles = {
   columns: css({
     display: 'grid',
-    gridTemplateColumns: '50% 50%'
+    gridTemplateColumns: '30% 1fr'
   }),
   behaviourList: css({
     '& li': {
-      listStyle: 'none'
+      listStyle: 'none',
+      padding: 3
+    }
+  }),
+  disabledBehaviour: css({
+    fontStyle: 'italic',
+    color: '#666'
+  }),
+  active: css({
+    background: 'green',
+    color: 'white',
+
+    '&:before': {
+      content: '‣ '
+    }
+  }),
+  actionList: css({
+    '& li': {
+      listStyle: 'none',
+      padding: 3
     }
   })
-}
+};
+
+const currentBehaviour = () => store.behaviourIndex === -1 ? null : store.behaviours[store.behaviourIndex];
 
 export default loadConditionally(() => store.behaviours, props => (
   <Window heading='Behaviours'>
     <div className={styles.columns}>
       <ol className={styles.behaviourList}>
         {store.behaviours.map((behaviour, index) => (
-          <li key={index}>
-            <input type='checkbox' checked={behaviour.enabled} />
-            {' '}
+          <li key={index} className={css(
+              !behaviour.enabled && styles.disabledBehaviour,
+              behaviour === currentBehaviour() && styles.active
+            )}>
             {behaviour.name}
-            {' '}
-            {index === store.behaviourIndex && 'active'}
           </li>
         ))}
       </ol>
       <div>
         {
-          !('behaviourIndex' in store) || store.behaviourIndex === null
+          !currentBehaviour()
           ? <span>No active behaviour</span>
           : (
-            <ul>
-              {store.behaviours[store.behaviourIndex].actions.map((action, index) => (
-                <li key={index}>
+            <ul className={styles.actionList}>
+              {currentBehaviour().actions.map((action, index) => (
+                <li key={`${store.behaviourIndex}_${index}`} className={index === store.actionIndex ? styles.active : ''}>
                   {action.name}
                   {' '}
-                  {index === store.actionIndex && 'active'}
+                  ({JSON.stringify(action.options)})
                 </li>
               ))}
             </ul>

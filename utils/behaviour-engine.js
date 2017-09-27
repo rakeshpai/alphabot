@@ -1,11 +1,11 @@
 const { notify } = require('../ui-server');
 
-module.exports.createAction = ({ name, action }) => (...args) => ({
-  name, args,
-  execute: done => action(...args, done),
+module.exports.createAction = ({ name, action }) => (options = {}) => ({
+  name, options,
+  execute: done => action(options, done),
 });
 
-module.exports.createBehavior = ({ name, actions, condition, needsControl, enabled = true }) => {
+module.exports.createBehavior = ({ name, actions, needsControl, enabled = true }) => {
   let currentActionIndex, tickHandler;
 
   const executeNextAction = done => {
@@ -27,17 +27,16 @@ module.exports.createBehavior = ({ name, actions, condition, needsControl, enabl
   };
 };
 
-let currentBehaviourIndex;
+let currentBehaviourIndex = -1;
 
 const setBehaviour = behaviourIndex => {
   currentBehaviourIndex = behaviourIndex;
   notify('behaviourIndex', behaviourIndex);
 }
 
-// TODO: FIXME
 module.exports.arbitrate = behaviours => sensors => {
   const currentBehaviour = () => currentBehaviourIndex === -1 ? null : behaviours[currentBehaviourIndex];
-  
+
   const subsume = behaviours.find(b => b.enabled && b.needsControl && b.needsControl(sensors));
 
   if(subsume && currentBehaviour() !== subsume) {
@@ -45,18 +44,16 @@ module.exports.arbitrate = behaviours => sensors => {
     currentBehaviour().execute(() => {
       setBehaviour(-1);
     });
+  } else if(!currentBehaviour()) {
+    setBehaviour(behaviours.findIndex(b => b.enabled && !b.needsControl));
+    if(currentBehaviour()) {
+      currentBehaviour().execute(() => {
+        //console.log('Done executing behaviour');
+      });
+    }
   }
 
-  if(!currentBehaviour()) {
-    setBehaviour(0);
-    currentBehaviour().execute(() => {
-      console.notify('Done executing behaviour');
-      enabled = false;
-      notify('enabled', false);
-    });
-  }
-
-  return behaviours[currentBehaviourIndex].tick(sensors);
+  return currentBehaviour().tick(sensors);
 };
 
-module.exports.reset = () => setBehaviour(null);
+module.exports.reset = () => setBehaviour(-1);
