@@ -13,7 +13,7 @@ const behaviours = [
       goToGoal({ x: 1000, y: 0 }),
       // driveStraight({ distance: 500 }),
       // turn({ by: Math.PI }),
-      stop(),
+      stop({ emergency=true }),
     ]
   })
 ];

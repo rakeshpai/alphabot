@@ -14,16 +14,21 @@ const slewedSpeed = (oldSpeed, newSpeed) => {
   return oldSpeed + (Math.sign(deltaSpeed) * slewRate);
 }
 
-module.exports = map(({ speed, steering, ts }) => {
+module.exports = map(({ speed, steering, options={} }) => {
   // vl = (2v - wL) / 2R where v = speed, w = steering
   // vr = (2v + wL) / 2R
   const leftSpeed = ((2 * speed) - (steering * wheelbase)) / wheels.left.diameter;
   const rightSpeed = ((2 * speed) + (steering * wheelbase)) / wheels.right.diameter;
 
-  previous.left = Math.round(slewedSpeed(previous.left, leftSpeed));
-  previous.right = Math.round(slewedSpeed(previous.right, rightSpeed));
+  if ( options['emergency'] ) {
+    previous.left = leftSpeed;
+    previous.right = rightSpeed;
+  } else {
+    previous.left = Math.round(slewedSpeed(previous.left, leftSpeed));
+    previous.right = Math.round(slewedSpeed(previous.right, rightSpeed));
+  }
 
   notify('motors', previous);
 
-  return { wheels: previous, ts };
+  return { wheels: previous };
 });
