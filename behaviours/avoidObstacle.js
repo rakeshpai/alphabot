@@ -15,7 +15,7 @@ module.exports = ['left', 'right'].reduce((obj, direction) => ({
       stop({ emergency: true }),
       driveStraight({ direction: 'reverse', distance: 300 }),
       stop(),
-      // turn({ by: (direction === 'left' ? -1 : 1) * Math.PI/18 }),
+      turn({ by: (direction === 'left' ? -1 : 1) * Math.PI/18 }),
       driveStraight({ distance: 100 })
     ]
   })

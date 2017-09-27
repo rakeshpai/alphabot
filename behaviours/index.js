@@ -16,8 +16,8 @@ const behaviours = [
     name: 'Behavior 1',
     actions: [
       // goToGoal({ x: 3000, y: 0 }),
-      turn({ by: Math.PI/9 }),
-      // driveStraight({ distance: 2000 }),
+      // turn({ by: Math.PI/9 }),
+      driveStraight({ distance: 1000 }),
       stop()
     ]
   })
