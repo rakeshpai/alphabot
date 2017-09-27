@@ -9,10 +9,9 @@ module.exports = createAction({
       if(
         Date.now() - startTime > 500
         && sensors.raw.ticks.left === 0 && sensors.raw.ticks.right === 0
-      ) {
-        done();
-        return { speed: 0, steering: 0, emergency };
-      }
+      ) done();
+
+      return { speed: 0, steering: 0, emergency };
     };
   }
 });
