@@ -37,6 +37,21 @@ const styles = {
 
 const currentBehaviour = () => store.behaviourIndex === -1 ? null : store.behaviours[store.behaviourIndex];
 
+const isNumeric = n => !isNaN(parseFloat(n)) && isFinite(n);
+
+const actionOptions = options => {
+  if(Object.keys(options).length === 0) return '()';
+
+  return `({ ${Object.keys(options).map(key => {
+    let value = options[key];
+    if(isNumeric(options[key]) && !Number.isInteger(options[key])) {
+      value = options[key].toFixed(2);
+    }
+
+    return `${key}: ${value}`
+  }).join(', ')} })`;
+}
+
 export default loadConditionally(() => store.behaviours, props => (
   <Window heading='Behaviours'>
     <div className={styles.columns}>
@@ -60,7 +75,7 @@ export default loadConditionally(() => store.behaviours, props => (
                 <li key={`${store.behaviourIndex}_${index}`} className={index === store.actionIndex ? styles.active : ''}>
                   {action.name}
                   {' '}
-                  ({JSON.stringify(action.options)})
+                  {actionOptions(action.options)}
                 </li>
               ))}
             </ul>
