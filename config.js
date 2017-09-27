@@ -32,7 +32,7 @@ const config = {
   // This is the PID controller constants for the various steering actions.
   // You may want to tweak these to suit your bot.
   // [kp, kd, ki]
-  steeringPid: [30, 20, 0],
+  steeringPid: [20, 0, 0],
 
   // The speed at which the motors are driven at 100% PWM.
   // Chosen by trial and error.
@@ -52,6 +52,7 @@ module.exports = {
   ...config,
   drivingSpeeds: {
     fast: config.topSpeed * 0.4,
+    medium: config.topSpeed * 0.25,
     slow: config.topSpeed * 0.1
   },
   steeringSpeed: config.topSpeed / 200

@@ -30,10 +30,10 @@ module.exports = sensors => {
 
   if(input) {
     switch(input) {
-      case 'forward': command.speed = drivingSpeeds.fast; break;
+      case 'forward': command.speed = drivingSpeeds.medium; break;
       case 'left': command.steering = steeringSpeed; break;
       case 'right': command.steering = -steeringSpeed; break;
-      case 'reverse': command.speed = -drivingSpeeds.fast; break;
+      case 'reverse': command.speed = -drivingSpeeds.medium; break;
     }
   }
 

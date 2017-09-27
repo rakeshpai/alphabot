@@ -1,4 +1,5 @@
 const PID = require('../utils/pid');
+const { restrictAngle } = require('../utils');
 const { createAction } = require('../utils/behaviour-engine');
 const { steeringSpeed, steeringPid } = require('../config');
 
@@ -19,8 +20,7 @@ const turnForTime = (time, direction, done) => {
 }
 
 const turnByAngle = (by, done) => {
-  const phiDesiredPID = new PID(...steeringPid);
-  phiDesiredPID.angle = true;
+  let phiDesiredPID;
 
   let isGoalSet = false;
   let target;
@@ -28,13 +28,18 @@ const turnByAngle = (by, done) => {
   return sensors => {
     if(!isGoalSet) {
       target = sensors.odometry.phi + by;
+      const error = Math.abs(target - sensors.odometry.phi);
+
+      phiDesiredPID = new PID(9/error, 0, 0);
+      phiDesiredPID.angle = true;
       phiDesiredPID.setTarget(target);
+
       isGoalSet = true;
     }
 
     if(
-      Math.abs(target - sensors.odometry.phi) < 0.05
-      && sensors.raw.left === 0 && sensors.raw.right === 0
+      Math.abs(restrictAngle(target - sensors.odometry.phi)) < 0.1
+      && sensors.raw.ticks.left === 0 && sensors.raw.ticks.right === 0
     ) done();
 
     return {speed: 0, steering: phiDesiredPID.update(sensors.odometry.phi)};

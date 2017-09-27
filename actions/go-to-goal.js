@@ -28,7 +28,7 @@ module.exports = createAction({
       }
 
       return {
-        speed: isCloseBy(odometry) ? drivingSpeeds.slow : drivingSpeeds.fast,
+        speed: isCloseBy(odometry) ? drivingSpeeds.slow : drivingSpeeds.medium,
         steering: phiDesiredPID.update(odometry.phi)
       }
     };

@@ -25,19 +25,19 @@ module.exports = createAction({
         // console.log(distanceTravelled);
 
         if(distanceToGoal < 50) { done(); return 0; }
-        else if(distanceToGoal < 400) dir * drivingSpeeds.slow;
-        return dir * drivingSpeeds.fast;
+        else if(distanceToGoal < 500) dir * drivingSpeeds.slow;
+        return dir * drivingSpeeds.medium;
       } else if(time) {
         const elapsedTime = Date.now() - startTime;
         const timeRemaining = time - elapsedTime;
 
         console.log('time based travel', timeRemaining, elapsedTime, dir);
         if(timeRemaining < 30) { done(); return 0; }
-        if(timeRemaining > 400) return dir * drivingSpeeds.fast;
+        if(timeRemaining > 400) return dir * drivingSpeeds.medium;
         return dir * drivingSpeeds.slow;
       } else {
         console.log('Driving without arguments');
-        return dir * drivingSpeeds.fast;
+        return dir * drivingSpeeds.medium;
       }
     }
 
