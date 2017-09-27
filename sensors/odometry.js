@@ -1,13 +1,16 @@
 const { wheels, encoderTicksPerRotation, wheelbase } = require("../config");
 const { bus, restrictAngle } = require("../utils");
 
-const distanceTurnedByWheel = (wheel, ticks) => {
-  // D = 2 pi R * delta-ticks / ticks per rotation
-  return Math.PI * wheels[wheel].diameter * ticks / encoderTicksPerRotation;
-};
+let lastMotorCommand = { left: 0, right: 0 };
+bus.on('motors', mc => lastMotorCommand = mc);
 
 const previous = {
   x: 0, y: 0, phi: 0
+};
+
+const distanceTurnedByWheel = (wheel, ticks) => {
+  // D = 2 pi R * delta-ticks / ticks per rotation
+  return Math.PI * wheels[wheel].diameter * ticks * Math.sign(lastMotorCommand[wheel]) / encoderTicksPerRotation;
 };
 
 module.exports = sensors => {

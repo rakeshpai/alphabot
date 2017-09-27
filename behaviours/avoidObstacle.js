@@ -4,9 +4,11 @@ const stop = require('../actions/stop');
 const turn = require('../actions/turn');
 const driveStraight = require('../actions/driveStraight');
 
-module.exports = ['left', 'right'].map(direction => ({
-  direction,
-  behaviour: createBehavior({
+const behaviourKey = direction => `avoid${direction == 'left' ? 'Left' : 'Right'}Obstacle`;
+
+module.exports = ['left', 'right'].reduce((obj, direction) => ({
+  ...obj,
+  [behaviourKey(direction)]: createBehavior({
     name: `Avoid ${direction} obstacle`,
     needsControl: sensors => sensors.raw.obstacleSensors[direction] < obstacleThreshold,
     actions: [
@@ -17,7 +19,4 @@ module.exports = ['left', 'right'].map(direction => ({
       driveStraight({ distance: 100 })
     ]
   })
-})).reduce((obj, item) => ({
-  ...obj,
-  [`avoid${item.direction === 'left' ? 'Left' : 'Right'}Obstacle`]: item.behaviour
 }), {});

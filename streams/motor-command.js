@@ -1,6 +1,7 @@
 const { obj: map } = require('through2-map');
 const { enableSlew, slewRate, wheelbase, wheels } = require('../config');
 const { notify } = require('../ui-server');
+const { bus } = require('../utils');
 
 const previous = { left: 0, right: 0 };
 
@@ -29,6 +30,7 @@ module.exports = map(({ speed, steering, emergency = false }) => {
   }
 
   notify('motors', previous);
+  bus.emit('motors', previous);
 
   return { wheels: previous };
 });
