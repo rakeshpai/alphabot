@@ -30,7 +30,7 @@ const turnByAngle = (by, done) => {
       target = sensors.odometry.phi + by;
       const error = Math.abs(target - sensors.odometry.phi);
 
-      phiDesiredPID = new PID(9/error, 0, 0);
+      phiDesiredPID = new PID(23/error, 0, 0);
       phiDesiredPID.angle = true;
       phiDesiredPID.setTarget(target);
 

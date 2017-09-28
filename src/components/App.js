@@ -26,7 +26,6 @@ const styles = {
     lineHeight: '2em'
   }),
   heading: css({
-    fontSize: '2.5em',
     padding: 10,
     alignSelf: 'center'
   }),
@@ -35,6 +34,17 @@ const styles = {
     gridTemplateColumns: '66.66% 33.33%',
   })
 };
+
+const Header = () => (
+  <header className={styles.heading}>
+    <pre>{
+`  __   __    ____  _  _   __   ____   __  ____
+ / _\\ (  )  (  _ \\/ )( \\ / _\\ (  _ \\ /  \\(_  _)
+/    \\/ (_/\\ ) __/) __ (/    \\ ) _ ((  O ) )(
+\\_/\\_/\\____/(__)  \\_)(_/\\_/\\_/(____/ \\__/ (__)
+`}</pre>
+  </header>
+);
 
 export default props => {
   if(!store.connected) return (
@@ -47,9 +57,7 @@ export default props => {
   return (
     <div>
       <div className={styles.columns}>
-        <header className={styles.heading}>
-          AlphaBot
-        </header>
+        <Header />
         <HeaderInfo />
       </div>
 

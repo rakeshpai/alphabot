@@ -10,10 +10,19 @@ const styles = {
     gridTemplateColumns: '30% 1fr'
   }),
   behaviourList: css({
+    border: '1px solid green',
+
     '& li': {
       listStyle: 'none',
-      padding: 3
+      padding: 3,
+      borderBottom: '1px solid green'
     }
+  }),
+  behaviourHeading: css({
+    fontSize: '1.1em',
+    fontWeight: 'normal',
+    textAlign: 'center',
+    padding: 5
   }),
   disabledBehaviour: css({
     fontStyle: 'italic',
@@ -28,6 +37,8 @@ const styles = {
     }
   }),
   actionList: css({
+    padding: 10,
+
     '& li': {
       listStyle: 'none',
       padding: 3
@@ -55,16 +66,19 @@ const actionOptions = options => {
 export default loadConditionally(() => store.behaviours, props => (
   <Window heading='Behaviours'>
     <div className={styles.columns}>
-      <ol className={styles.behaviourList}>
-        {store.behaviours.map((behaviour, index) => (
-          <li key={index} className={css(
-              !behaviour.enabled && styles.disabledBehaviour,
-              behaviour === currentBehaviour() && styles.active
-            )}>
-            {behaviour.name}
-          </li>
-        ))}
-      </ol>
+      <div>
+        <h2 className={styles.behaviourHeading}>List of behaviours</h2>
+        <ol className={styles.behaviourList}>
+          {store.behaviours.map((behaviour, index) => (
+            <li key={index} className={css(
+                !behaviour.enabled && styles.disabledBehaviour,
+                behaviour === currentBehaviour() && styles.active
+              )}>
+              {behaviour.name}
+            </li>
+          ))}
+        </ol>
+      </div>
       <div>
         {
           !currentBehaviour()

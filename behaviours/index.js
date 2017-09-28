@@ -11,7 +11,7 @@ const { notify } = require('../ui-server');
 const behaviours = [
   avoidLeftObstacle,
   avoidRightObstacle,
-  // followSquarePerimeter,
+  followSquarePerimeter,
   createBehavior({
     name: 'Behavior 1',
     actions: [
