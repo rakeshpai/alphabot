@@ -32,8 +32,7 @@ setInterval(() => {
       left: hal.obstacleSensors.left(),
       right: hal.obstacleSensors.right()
     },
-    batteryVoltage: hal.batteryVoltage(),
-    ts: Date.now()
+    batteryVoltage: hal.batteryVoltage()
   });
 
   ticks.left = ticks.right = 0;

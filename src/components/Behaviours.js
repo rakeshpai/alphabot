@@ -36,9 +36,10 @@ const styles = {
       content: '‣ '
     }
   }),
+  actions: css({
+    padding: '0 10px'
+  }),
   actionList: css({
-    padding: 10,
-
     '& li': {
       listStyle: 'none',
       padding: 3
@@ -79,20 +80,23 @@ export default loadConditionally(() => store.behaviours, props => (
           ))}
         </ol>
       </div>
-      <div>
+      <div className={styles.actions}>
         {
           !currentBehaviour()
           ? <span>No active behaviour</span>
           : (
-            <ul className={styles.actionList}>
-              {currentBehaviour().actions.map((action, index) => (
-                <li key={`${store.behaviourIndex}_${index}`} className={index === store.actionIndex ? styles.active : ''}>
-                  {action.name}
-                  {' '}
-                  {actionOptions(action.options)}
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h2 className={styles.behaviourHeading}>Actions for '{currentBehaviour().name}'</h2>
+              <ul className={styles.actionList}>
+                {currentBehaviour().actions.map((action, index) => (
+                  <li key={`${store.behaviourIndex}_${index}`} className={index === store.actionIndex ? styles.active : ''}>
+                    {action.name}
+                    {' '}
+                    {actionOptions(action.options)}
+                  </li>
+                ))}
+              </ul>
+            </div>
           )
         }
       </div>

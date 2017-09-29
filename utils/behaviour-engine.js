@@ -48,7 +48,7 @@ module.exports.arbitrate = behaviours => sensors => {
     setBehaviour(behaviours.findIndex(b => b.enabled && !b.needsControl));
     if(currentBehaviour()) {
       currentBehaviour().execute(() => {
-        //console.log('Done executing behaviour');
+        //console.log('Done executing all behaviours');
       });
     }
   }

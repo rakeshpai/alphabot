@@ -3,11 +3,11 @@ const { drivingSpeeds, steeringSpeed } = require('../config');
 const lirc = require('../utils/lirc_receiver');
 
 const remoteKeysToInput = {
-  'KEY_CHANNEL': 'forward',
-  'KEY_PREVIOUS': 'left',
-  'KEY_PLAYPAUSE': 'right',
-  'KEY_NEXT': 'reverse'
-}
+  KEY_CHANNEL: 'forward',
+  KEY_PREVIOUS: 'left',
+  KEY_PLAYPAUSE: 'right',
+  KEY_NEXT: 'reverse'
+};
 
 let input = null;
 let inputTimer = null;

@@ -1,5 +1,4 @@
 const EE = require('events');
-const { notify } = require('../ui-server');
 
 const square = num => Math.pow(num, 2);
 
@@ -8,7 +7,7 @@ const utils = {
   restrictAngle: angle => Math.atan2(Math.sin(angle), Math.cos(angle)),
 
   distance: (p1, p2) => Math.sqrt(Math.abs(square(p1.x - p2.x) - square(p1.y - p2.y))),
-  isWithin: (range, a) => b => utils.distance(a, b) < range,
+  isWithin: (range, a) => b => utils.distance(a, b) < range
 };
 
 module.exports = utils;

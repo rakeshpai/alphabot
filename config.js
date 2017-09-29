@@ -56,4 +56,4 @@ module.exports = {
     slow: config.topSpeed * 0.2
   },
   steeringSpeed: config.topSpeed / 200
-}
+};

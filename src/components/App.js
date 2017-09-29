@@ -62,12 +62,12 @@ export default props => {
       </div>
 
       <div className={styles.columns}>
-        <div className={styles.leftColumn}>
+        <div>
           <TravelledPath />
           <Behaviours />
         </div>
 
-        <div className={styles.rightColumn}>
+        <div>
           <MasterReset />
           <Motors />
           <Sensors />
