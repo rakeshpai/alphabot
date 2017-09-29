@@ -31,14 +31,14 @@ export default loadConditionally(() => store.sensed, props => (
       {' '}
       <span className={css({
           color: store.sensed && (
-            store.sensed.raw.batteryVoltage > 7 ? 'green' :
-              store.sensed.raw.batteryVoltage < 6.2 ? 'red' : 'orange'
+            store.sensed.batteryVoltage > 7 ? 'green' :
+              store.sensed.batteryVoltage < 6.2 ? 'red' : 'orange'
           )
         })}>
-        {store.sensed && store.sensed.raw.batteryVoltage.toFixed(2)}v
+        {store.sensed && store.sensed.batteryVoltage.toFixed(2)}v
       </span>
       <br />
-      {store.sensed && store.sensed.raw.batteryVoltage < 6.1 && 'Shutdown imminent'}
+      {store.sensed && store.sensed.batteryVoltage < 6.1 && 'Shutdown imminent'}
     </div>
     <div className={styles.enable}>
       Mode: {store.mode === 'manual' ? 'Manual' : 'Auto'}

@@ -1,5 +1,5 @@
+// Receives commands from remote control, and UI.
 const { bus } = require('../utils');
-const { drivingSpeeds, steeringSpeed } = require('../config');
 const lirc = require('../utils/lirc_receiver');
 
 const remoteKeysToInput = {
@@ -25,17 +25,4 @@ lirc.on('keypress', ({ key }) => {
 
 bus.on('motorCommand', setInput);
 
-module.exports = sensors => {
-  let command = { speed: 0, steering: 0 };
-
-  if(input) {
-    switch(input) {
-      case 'forward': command.speed = drivingSpeeds.medium; break;
-      case 'left': command.steering = steeringSpeed; break;
-      case 'right': command.steering = -steeringSpeed; break;
-      case 'reverse': command.speed = -drivingSpeeds.medium; break;
-    }
-  }
-
-  return command;
-}
+module.exports = () => input;

@@ -22,6 +22,7 @@
     "glamor": "^2.20.40",
     "mousetrap": "^1.6.1",
     "nodemon": "^1.12.1",
+    "point-in-polygon": "^1.0.1",
     "power-off": "^1.1.2",
     "react-scripts": "^1.0.14",
     "reconnecting-websocket": "^3.2.2",

@@ -1,4 +1,4 @@
-// This is a duplex stream that pipes out data from the sensors
+  // This is a duplex stream that pipes out data from the sensors
 // every config.clock milliseconds.
 // Motor commands can be piped into this stream, which then get sent
 // to the motors.

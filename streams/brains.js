@@ -1,28 +1,50 @@
 const { bus } = require('../utils');
 const { obj: map } = require('through2-map');
-const { notify } = require('../ui-server');
 const powerOff = require('power-off');
-const manualControl = require('./manual-control');
 const behave = require('../behaviours');
+const { drivingSpeeds, steeringSpeed } = require('../config');
+const createLeakyIntegrator = require('../utils/leaky-integrator');
+const { notify } = require('../ui-server');
 
-let mode = 'manual';
-notify('mode', mode);
+// Mode selection
+let mode;
+const setMode = m => { mode = m; notify('mode', mode); };
 
-bus.on('setMode', value => {
-  mode = value;
-  notify('mode', value);
-});
+bus.on('setMode', setMode);
+setMode('manual');
 
+// Shutdown if needed
 let shutdownInitiated = false;
-const shutdown = () => {
+const li = createLeakyIntegrator();
+const shutdownIfNeeded = batteryVoltage => {
   if(shutdownInitiated) return;
 
-  powerOff(() => {});
-  shutdownInitiated = true;
-}
+  li.leak(1);
+  if(batteryVoltage < 6) li.add(2);
+  if(li.level() > 20) {
+    powerOff(() => {});
+    shutdownInitiated = true;
+  }
+};
+
+// Manual control
+const manualControl = ({ remoteCommand }) => {
+  let command = { velocity: 0, rotation: 0 };
+
+  if(!remoteCommand) return command;
+
+  switch(remoteCommand) {
+    case 'forward': command.velocity = drivingSpeeds.medium; break;
+    case 'left': command.rotation = steeringSpeed; break;
+    case 'right': command.rotation = -steeringSpeed; break;
+    case 'reverse': command.velocity = -drivingSpeeds.medium; break;
+  }
+
+  return command;
+};
 
 module.exports = map(sensors => {
-  if(sensors.raw.batteryVoltage < 6) shutdown();
+  shutdownIfNeeded(sensors.batteryVoltage);
 
   if(mode === 'manual') return manualControl(sensors);
 

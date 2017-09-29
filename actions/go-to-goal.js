@@ -1,9 +1,7 @@
 const { createAction } = require('../utils/behaviour-engine');
 const { drivingSpeeds, steeringPid } = require('../config');
-const { distance } = require('../utils')
+const { distance, isWithin } = require('../utils')
 const PID = require('../utils/pid');
-
-const isWithin = (range, a) => b => distance(a, b) < range;
 
 module.exports = createAction({
   name: 'Go to goal',
@@ -24,13 +22,13 @@ module.exports = createAction({
 
       if(hasReached(odometry)) {
         done();
-        return { speed: 0, steering: 0 };
+        return { velocity: 0, rotation: 0 };
       }
 
       return {
-        speed: isCloseBy(odometry) ? drivingSpeeds.slow : drivingSpeeds.medium,
-        steering: phiDesiredPID.update(odometry.phi)
-      }
+        velocity: isCloseBy(odometry) ? drivingSpeeds.slow : drivingSpeeds.medium,
+        rotation: phiDesiredPID.update(odometry.phi)
+      };
     };
   }
 });

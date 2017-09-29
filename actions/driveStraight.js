@@ -41,18 +41,18 @@ module.exports = createAction({
       }
     }
 
-    return sensors => {
+    return ({ odometry }) => {
       if(!isGoalSet) {
-        phiDesiredPID.setTarget(sensors.odometry.phi);
+        phiDesiredPID.setTarget(odometry.phi);
         startTime = Date.now();
-        startLocation.x = sensors.odometry.x;
-        startLocation.y = sensors.odometry.y;
+        startLocation.x = odometry.x;
+        startLocation.y = odometry.y;
         isGoalSet = true;
       }
 
       return {
-        speed: speed(sensors.odometry, done),
-        steering: phiDesiredPID.update(sensors.odometry.phi)
+        velocity: speed(odometry, done),
+        rotation: phiDesiredPID.update(odometry.phi)
       };
     }
   }

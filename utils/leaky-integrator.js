@@ -4,7 +4,7 @@
 // You can check the `.level` of the container to see how much
 // it has filled up.
 
-// Useful to check if you're stuck doing something for too long
+// Useful to check if you're stuck doing something wrong for too long.
 // Keep draining a small amount from the container every tick,
 // and add a larger amount to it when you're doing something wrong.
 // When the `.level` hits a threshold, you know you've been trying
@@ -13,15 +13,15 @@
 
 module.exports = () => {
   let value = 0;
-  
+
   return {
     leak: amount => {
       value -= amount;
-      if(value < 0) value === 0;
+      if(value < 0) value = 0;
     },
-    
+
     add: amount => value += amount,
-    
+
     level: () => value
   }
-}
+};

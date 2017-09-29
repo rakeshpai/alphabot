@@ -10,7 +10,7 @@ module.exports = ['left', 'right'].reduce((obj, direction) => ({
   ...obj,
   [behaviourKey(direction)]: createBehavior({
     name: `Avoid ${direction} obstacle`,
-    needsControl: sensors => sensors.raw.obstacleSensors[direction] < obstacleThreshold,
+    needsControl: ({ obstacleSensors }) => obstacleSensors[direction] < obstacleThreshold,
     actions: [
       stop({ emergency: true }),
       driveStraight({ direction: 'reverse', distance: 300 }),

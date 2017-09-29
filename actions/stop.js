@@ -5,13 +5,10 @@ module.exports = createAction({
   action: ({ emergency }, done) => {
     const startTime = Date.now();
 
-    return sensors => {
-      if(
-        Date.now() - startTime > 500
-        && sensors.raw.ticks.left === 0 && sensors.raw.ticks.right === 0
-      ) done();
+    return ({ ticks: { left, right }}) => {
+      if(Date.now() - startTime > 500 && left === 0 && right === 0) done();
 
-      return { speed: 0, steering: 0, emergency };
+      return { velocity: 0, rotation: 0, emergency };
     };
   }
 });

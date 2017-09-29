@@ -5,7 +5,7 @@ import store from '../store';
 
 export default loadConditionally(() => store.sensed, props => (
   <Window heading='Other sensors'>
-    Left obstacle: {store.sensed.raw.obstacleSensors.left}<br />
-    Right obstacle: {store.sensed.raw.obstacleSensors.right}
+    Left obstacle: {store.sensed.obstacleSensors.left}<br />
+    Right obstacle: {store.sensed.obstacleSensors.right}
   </Window>
 ));
