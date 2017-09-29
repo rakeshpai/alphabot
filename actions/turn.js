@@ -1,6 +1,7 @@
 const PID = require('../utils/pid');
 const { restrictAngle } = require('../utils');
 const { createAction } = require('../utils/behaviour-engine');
+const createLeakyIntegrator = require('../utils/leaky-integrator');
 const { steeringSpeed, steeringPid } = require('../config');
 
 const turnForTime = (time, direction, done) => {
@@ -20,6 +21,7 @@ const turnForTime = (time, direction, done) => {
 }
 
 const turnByAngle = (by, done) => {
+  const li = createLeakyIntegrator();
   let phiDesiredPID;
 
   let isGoalSet = false;
@@ -41,6 +43,14 @@ const turnByAngle = (by, done) => {
       Math.abs(restrictAngle(target - sensors.odometry.phi)) < 0.1
       && sensors.raw.ticks.left === 0 && sensors.raw.ticks.right === 0
     ) done();
+
+    // Leaky integrator checks if we're making progress
+    li.leak(1);
+    if(sensors.raw.ticks.left === 0 && sensors.raw.ticks.right === 0) li.add(2);
+    if(li.level() > 30) {
+      console.log(`TURN: We aren't making progress. Bailing out.`);
+      done();
+    }
 
     return {speed: 0, steering: phiDesiredPID.update(sensors.odometry.phi)};
   }
